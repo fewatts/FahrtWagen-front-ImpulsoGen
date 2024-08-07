@@ -1,0 +1,30 @@
+[
+    {
+        "idCliente": 1,
+        "nome": "João Silva",
+        "cpf": "12345678900",
+        "telefone": "11987654321",
+        "email": "joao.silva@example.com"
+    },
+    {
+        "idCliente": 2,
+        "nome": "Maria Oliveira",
+        "cpf": "09876543211",
+        "telefone": "11912345678",
+        "email": "maria.oliveira@example.com"
+    },
+    {
+        "idCliente": 3,
+        "nome": "Carlos Pereira",
+        "cpf": "11223344556",
+        "telefone": "11956789012",
+        "email": "carlos.pereira@example.com"
+    },
+    {
+        "idCliente": 4,
+        "nome": "Ana Costa",
+        "cpf": "66554433221",
+        "telefone": "11934567890",
+        "email": "ana.costa@example.com"
+    }
+]

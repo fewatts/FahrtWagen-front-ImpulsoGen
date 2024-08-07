@@ -1,0 +1,42 @@
+[
+    {
+        "idCarro": 1,
+        "marca": "Volkswagen",
+        "modelo": "Fusca",
+        "ano": 1970,
+        "placa": "ABC1234",
+        "valor": 100.00,
+        "manutencaoEmDia": true,
+        "ativo": true
+    },
+    {
+        "idCarro": 2,
+        "marca": "Honda",
+        "modelo": "Civic",
+        "ano": 2022,
+        "placa": "XYZ5678",
+        "valor": 250.00,
+        "manutencaoEmDia": true,
+        "ativo": true
+    },
+    {
+        "idCarro": 3,
+        "marca": "Toyota",
+        "modelo": "Corolla",
+        "ano": 2018,
+        "placa": "LMN1234",
+        "valor": 200.00,
+        "manutencaoEmDia": false,
+        "ativo": true
+    },
+    {
+        "idCarro": 4,
+        "marca": "Ford",
+        "modelo": "Mustang",
+        "ano": 2021,
+        "placa": "OPQ5678",
+        "valor": 350.00,
+        "manutencaoEmDia": true,
+        "ativo": false
+    }
+]
