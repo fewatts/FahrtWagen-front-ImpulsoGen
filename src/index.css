@@ -54,3 +54,13 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+:root {
+    --background: #ACBEA3;
+    --c1: #40476D;
+    --c2: #5B5941;
+    --c3: #3E92CC;
+    --c4: #FEC0AA;
+    --black: #000000;
+    --ghostwhite: #f8f8ff;
+  }

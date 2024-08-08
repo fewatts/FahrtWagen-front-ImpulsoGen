@@ -1,0 +1,85 @@
+/* Auth.css */
+
+/* Estilo geral para o contêiner principal */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--c1);
+    padding: 20px;
+}
+
+.login-section {
+    background: var(--ghostwhite);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Estilo do formulário */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: var(--black);
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--ghostwhite);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--c3);
+    color: var(--ghostwhite);
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: var(--c2);
+}
+
+.submit-button:disabled {
+    background-color: var(--ghostwhite);
+    cursor: not-allowed;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 10px;
+    }
+
+    .login-section {
+        padding: 15px;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+    }
+
+    .form-input, .submit-button {
+        font-size: 0.875rem;
+    }
+}

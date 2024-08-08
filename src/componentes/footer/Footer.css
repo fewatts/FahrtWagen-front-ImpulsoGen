@@ -1,0 +1,14 @@
+footer {
+    background-color: var(--c1);
+    text-align: center;
+    color: var(--ghostwhite);
+    padding: 2vh;
+    position: sticky;
+    height: max-content;
+}
+
+.git {
+    margin: auto;
+    height: 30px;
+    width: 40px;
+}

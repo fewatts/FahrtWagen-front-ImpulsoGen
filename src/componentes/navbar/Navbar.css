@@ -1,0 +1,57 @@
+.logo-container {
+    flex: 1;
+  }
+  
+  .logo {
+    height: 40px;
+  }
+  
+  #burguer {
+    display: none;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 8vh;
+    padding: 0rem 2rem;
+    background-color: var(--c1);
+  }
+  
+  #itens2 {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+    font-size: 1.5rem;
+    color: var(--ghostwhite);
+  }
+  
+  a:hover {
+    color: var(--c2);
+  }
+  
+  @media screen and (max-width: 767px) {
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 8vh;
+      padding: 0rem 2rem;
+      background-color: var(--c1);
+    }
+  
+    #burguer {
+      display: flex;
+      cursor: pointer;
+      color: var(--ghostwhite);
+    }
+  
+    #burguer:hover {
+      color: var(--c2);
+    }
+  
+    #itens2 {
+      display: none;
+    }
+  }
