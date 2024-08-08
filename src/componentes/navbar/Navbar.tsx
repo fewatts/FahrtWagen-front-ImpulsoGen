@@ -28,8 +28,8 @@ function Navbar() {
                 <div id='itens'>
                     <ul id='itens2'>
                         <li><Link to='/'>Home</Link></li>
-                        <li><Link to='#'>clientes</Link></li>
-                        <li><Link to='#'>carros</Link></li>
+                        <li><Link to='#'>Clientes</Link></li>
+                        <li><Link to='#'>Carros</Link></li>
                         <li><Link to='#'>Reservas</Link></li>
                         <li><Link to='/' onClick={logout}>Logout</Link></li>
                     </ul>

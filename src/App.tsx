@@ -1,4 +1,4 @@
-// import Home from "./paginas/home/Home"
+import Home from "./paginas/home/Home"
 import Navbar from './componentes/navbar/Navbar';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Footer } from "./componentes/footer/Footer";
@@ -13,7 +13,8 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Auth />} />
-            {/* <Route path="/home" element={<Home />} /> */}
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/home" element={<Home />} />
           </Routes>
           <Footer />
         </BrowserRouter>
