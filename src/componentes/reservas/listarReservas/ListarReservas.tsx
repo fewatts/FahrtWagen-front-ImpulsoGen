@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Carro } from "../../../models/Carro";
+import { Reserva } from "../../../models/Reserva";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
 import { buscar } from "../../../service/Service";
-import './ListarCarros.css'; 
-import CardCarro from "../cardCarro/CardCarro";
+import './ListarReservas.css';
+import CardReserva from "../cardreserva/CardReserva";
 
-export function ListarCarros() {
-    const [carros, setCarros] = useState<Carro[]>([]);
+export function ListarReservas() {
+    const [reservas, setReservas] = useState<Reserva[]>([]);
     const { usuario } = useContext(AuthContext);
     const navigate = useNavigate();
     const token = usuario.token;
@@ -19,32 +19,34 @@ export function ListarCarros() {
         }
     }, [token, navigate]);
 
-    async function getCarros() {
+    async function getReservas() {
         try {
-            await buscar('/carros', setCarros, {
+            const resposta = await buscar('/reservas', setReservas, {
                 headers: { Authorization: token },
             });
+
+            console.log(resposta);
         } catch (error) {
-            alert('Não foi possível buscar os carros');
+            alert('Não foi possível buscar as reservas');
             console.error(error);
         }
     }
 
     useEffect(() => {
         if (token) {
-            getCarros();
+            getReservas();
         }
     }, [token]);
 
     return (
-        <section className="carros-container">
-            <h2 className="titulo-lista">Nossos carros: </h2>
-            {carros.length === 0 ? (
-                <p className="carregando">Carregando carros...</p>
+        <section className="reservas-container">
+            <h2 className="titulo-lista">Nossas reservas:</h2>
+            {reservas.length === 0 ? (
+                <p className="carregando">Carregando reservas...</p>
             ) : (
-                <section className="carros-list">
-                    {carros.map(carro => (
-                        <CardCarro carro={carro}/>
+                <section className="reservas-list">
+                    {reservas.map(reserva => (
+                        <CardReserva key={reserva.idReserva} reserva={reserva} />
                     ))}
                 </section>
             )}

@@ -17,7 +17,7 @@ function Home() {
                         <Link to={'/cadastrarCliente'} className="btn btn-edit">
                             Cadastrar Cliente
                         </Link>
-                        <Link to={'#'} className="btn btn-edit">
+                        <Link to={'/cadastrarReserva'} className="btn btn-edit">
                             Cadastrar Reserva
                         </Link>
                     </div>
