@@ -28,9 +28,9 @@ function Navbar() {
                 <div id='itens'>
                     <ul id='itens2'>
                         <li><Link to='/home'>Home</Link></li>
-                        <li><Link to='#'>Clientes</Link></li>
+                        <li><Link to='/clientes'>Clientes</Link></li>
                         <li><Link to='/carros'>Carros</Link></li>
-                        <li><Link to='#'>Reservas</Link></li>
+                        <li><Link to='/reservas'>Reservas</Link></li>
                         <li><Link to='/' onClick={logout}>Logout</Link></li>
                     </ul>
                 </div>

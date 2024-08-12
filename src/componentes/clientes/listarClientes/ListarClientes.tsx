@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Carro } from "../../../models/Carro";
+import { Cliente } from "../../../models/Cliente";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
 import { buscar } from "../../../service/Service";
-import './listaCarros.css'; 
-import CardCarro from "../cardCarro/CardCarro";
+import './ListarClientes.css';
+import CardCliente from "../cardCliente/CardCliente";
 
-export function ListaCarros() {
-    const [carros, setCarros] = useState<Carro[]>([]);
+export function ListarClientes() {
+    const [clientes, setClientes] = useState<Cliente[]>([]);
     const { usuario } = useContext(AuthContext);
     const navigate = useNavigate();
     const token = usuario.token;
@@ -19,34 +19,34 @@ export function ListaCarros() {
         }
     }, [token, navigate]);
 
-    async function getCarros() {
+    async function getClientes() {
         try {
-            const resposta = await buscar('/carros', setCarros, {
+            const resposta = await buscar('/clientes', setClientes, {
                 headers: { Authorization: token },
             });
 
             console.log(resposta);
         } catch (error) {
-            alert('Não foi possível buscar os carros');
+            alert('Não foi possível buscar os clientes');
             console.error(error);
         }
     }
 
     useEffect(() => {
         if (token) {
-            getCarros();
+            getClientes();
         }
     }, [token]);
 
     return (
-        <section className="carros-container">
-            <h2 className="titulo-lista">Nossos carros: </h2>
-            {carros.length === 0 ? (
-                <p className="carregando">Carregando carros...</p>
+        <section className="clientes-container">
+            <h2 className="titulo-lista">Nossos clientes:</h2>
+            {clientes.length === 0 ? (
+                <p className="carregando">Carregando clientes...</p>
             ) : (
-                <section className="carros-list">
-                    {carros.map(carro => (
-                        <CardCarro carro={carro}/>
+                <section className="clientes-list">
+                    {clientes.map(cliente => (
+                        <CardCliente key={cliente.idCliente} cliente={cliente} />
                     ))}
                 </section>
             )}

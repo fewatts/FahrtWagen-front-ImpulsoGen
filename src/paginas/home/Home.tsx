@@ -1,5 +1,5 @@
+import { ListarCarros } from '../../componentes/carros/listarCarros/ListarCarros';
 import home from './../../assets/home.svg';
-import { ListaCarros } from '../../componentes/carros/listarCarros/listaCarros';
 import './Home.css';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ function Home() {
                         <Link to={'/cadastrarCarro'} className="btn btn-edit">
                             Cadastrar carro
                         </Link>
-                        <Link to={'#'} className="btn btn-edit">
+                        <Link to={'/cadastrarCliente'} className="btn btn-edit">
                             Cadastrar Cliente
                         </Link>
                         <Link to={'#'} className="btn btn-edit">
@@ -26,7 +26,7 @@ function Home() {
                     <img src={home} alt="Home" />
                 </picture>
             </section>
-            <ListaCarros />
+            <ListarCarros />
         </main >
     );
 }

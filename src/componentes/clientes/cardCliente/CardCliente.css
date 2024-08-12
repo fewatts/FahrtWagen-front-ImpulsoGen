@@ -1,0 +1,108 @@
+.card-cliente {
+    background-color: var(--ghostwhite);
+    border: 2px solid var(--c1);
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 16px;
+    margin: 16px 0;
+    color: var(--black);
+    min-width: 450px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-header {
+    padding: 8px;
+    color: var(--ghostwhite);
+    border-bottom: 2px solid var(--black);
+    text-align: center;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: var(--black);
+    font-size: 1.25rem;
+}
+
+.card-content {
+    flex-grow: 1;
+}
+
+.card-content dl {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.card-content dt {
+    font-weight: bold;
+    color: var(--c2);
+}
+
+.card-content dd {
+    margin-left: 0;
+    color: var(--black);
+}
+
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-actions .btn {
+    flex: 1 1 48%;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--ghostwhite);
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.card-actions .btn-edit {
+    background-color: var(--c3);
+}
+
+.card-actions .btn-edit:hover {
+    background-color: var(--c2);
+}
+
+.card-actions .btn-delete {
+    background-color: var(--c4);
+}
+
+.card-actions .btn-delete:hover {
+    background-color: var(--c2);
+}
+
+@media (max-width: 768px) {
+    .card-header h3 {
+        font-size: 1rem;
+    }
+
+    .card-cliente {
+        min-width: 300px;
+    }
+
+    .card-actions .btn {
+        flex: 1 1 100%;
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-cliente {
+        padding: 12px;
+    }
+
+    .card-header h3 {
+        font-size: 0.875rem;
+    }
+}
