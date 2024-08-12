@@ -19,6 +19,32 @@
     max-width: 50%; 
 }
 
+.para-home{
+    margin-bottom: 2rem;
+}
+
+.card-actions .btn {
+    flex: 1 1 48%;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--ghostwhite);
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    gap: 20rem;
+}
+
+.card-actions .btn-edit {
+    background-color: var(--c3);
+}
+
+.card-actions .btn-edit:hover {
+    background-color: var(--c2);
+}
+
 @media (max-width: 768px) {
     .home-container {
         flex-direction: column; 

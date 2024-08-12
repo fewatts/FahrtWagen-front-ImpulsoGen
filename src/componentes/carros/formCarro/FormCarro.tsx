@@ -3,12 +3,22 @@ import { Carro } from '../../../models/Carro';
 import './FormCarro.css';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { atualizar, buscar, cadastrar } from '../../../service/Service';
+import { atualizar, buscarPeloId, cadastrar } from '../../../service/Service';
 
 
 function FormularioCarro() {
 
-    const [carro, setCarro] = useState<Carro>({} as Carro);
+    const [carro, setCarro] = useState<Carro>({
+        idCarro: null,
+        marca: '',
+        modelo: '',
+        ano: 0,
+        placa: '',
+        valor: 0,
+        manutencaoEmDia: false,
+        ativo: false,
+    });
+
 
     const { usuario, handleLogout } = useContext(AuthContext);
 
@@ -19,12 +29,13 @@ function FormularioCarro() {
     let navigate = useNavigate();
 
     async function buscarPorId(id: string) {
-        await buscar(`/carros/${id}`, setCarro, {
+        await buscarPeloId(`/carros/${id}`, setCarro, {
             headers: {
                 Authorization: token,
             },
         });
     }
+
 
     useEffect(() => {
         if (id !== undefined) {
@@ -40,11 +51,13 @@ function FormularioCarro() {
     }, [token]);
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+        const { name, value, type, checked } = e.target;
         setCarro({
             ...carro,
-            [e.target.name]: e.target.value,
+            [name]: type === 'checkbox' ? checked : value,
         });
     }
+
 
     async function gerarNovoCarro(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -88,7 +101,7 @@ function FormularioCarro() {
 
     function retornar() {
         navigate('/carros');
-      }
+    }
 
     return (
         <main className="form-container">
@@ -105,7 +118,9 @@ function FormularioCarro() {
                         id="marca"
                         name="marca"
                         value={carro.marca || ''}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-input"
                     />
                 </div>
@@ -116,7 +131,9 @@ function FormularioCarro() {
                         id="modelo"
                         name="modelo"
                         value={carro.modelo || ''}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-input"
                     />
                 </div>
@@ -127,7 +144,9 @@ function FormularioCarro() {
                         id="ano"
                         name="ano"
                         value={carro.ano || ''}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-input"
                     />
                 </div>
@@ -138,7 +157,9 @@ function FormularioCarro() {
                         id="placa"
                         name="placa"
                         value={carro.placa || ''}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-input"
                     />
                 </div>
@@ -149,7 +170,9 @@ function FormularioCarro() {
                         id="valor"
                         name="valor"
                         value={carro.valor || ''}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-input"
                     />
                 </div>
@@ -160,7 +183,9 @@ function FormularioCarro() {
                         id="manutencaoEmDia"
                         name="manutencaoEmDia"
                         checked={carro.manutencaoEmDia || false}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-checkbox"
                     />
                 </div>
@@ -171,7 +196,9 @@ function FormularioCarro() {
                         id="ativo"
                         name="ativo"
                         checked={carro.ativo || false}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            atualizarEstado(e)
+                        }
                         className="form-checkbox"
                     />
                 </div>

@@ -6,6 +6,7 @@ import { Auth } from "./paginas/auth/Auth";
 import { AuthProvider } from './contexts/AuthContext';
 import { ListaCarros } from "./componentes/carros/listarCarros/listaCarros";
 import FormularioCarro from "./componentes/carros/formCarro/FormCarro";
+import { DeletarCarro } from "./componentes/carros/deletarCarro/DeletarCarro";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/carros" element={<ListaCarros />} />
             <Route path="/editarCarro/:id" element={<FormularioCarro />} />
+            <Route path="/deletarCarro/:id" element={<DeletarCarro />} />
             <Route path="/cadastrarCarro" element={<FormularioCarro />} />
           </Routes>
           <Footer />

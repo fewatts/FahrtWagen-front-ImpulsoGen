@@ -1,5 +1,5 @@
 export interface Carro {
-    idCarro: number;
+    idCarro: number | null;
     marca: string;
     modelo: string;
     ano: number;
