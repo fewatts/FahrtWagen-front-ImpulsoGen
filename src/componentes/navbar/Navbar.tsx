@@ -13,7 +13,7 @@ function Navbar() {
     function logout() {
         handleLogout();
         alert('Usuário deslogado com sucesso');
-        navigate('/login');
+        navigate('/auth');
     }
 
     let navbarComponent;
@@ -22,14 +22,14 @@ function Navbar() {
         navbarComponent = (
             <nav className='navbar'>
                 <picture className='logo-container'>
-                    <Link to='/'><img src={logo} alt="logo" className='logo' /></Link>
+                    <Link to='/home'><img src={logo} alt="logo" className='logo' /></Link>
                 </picture>
 
                 <div id='itens'>
                     <ul id='itens2'>
-                        <li><Link to='/'>Home</Link></li>
+                        <li><Link to='/home'>Home</Link></li>
                         <li><Link to='#'>Clientes</Link></li>
-                        <li><Link to='#'>Carros</Link></li>
+                        <li><Link to='/carros'>Carros</Link></li>
                         <li><Link to='#'>Reservas</Link></li>
                         <li><Link to='/' onClick={logout}>Logout</Link></li>
                     </ul>

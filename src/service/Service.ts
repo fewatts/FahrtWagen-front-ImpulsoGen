@@ -19,6 +19,11 @@ export const buscar = async(url: string, setDados: Function, header: Object) => 
   setDados(resposta.data.content)
 }
 
+export const buscarPeloId = async(url: string, setDados: Function, header: Object) => {
+  const resposta = await api.get(url, header)
+  setDados(resposta.data)
+}
+
 export const cadastrar = async(url: string, dados: Object, setDados: Function, header: Object) => {
   const resposta = await api.post(url, dados, header)
   setDados(resposta.data)
@@ -26,6 +31,7 @@ export const cadastrar = async(url: string, dados: Object, setDados: Function, h
 
 export const atualizar = async(url: string, dados: Object, setDados: Function, header: Object) => {
   const resposta = await api.put(url, dados, header)
+  console.log(resposta.data)
   setDados(resposta.data)
 }
 

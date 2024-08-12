@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { Carro } from "../../models/Carro";
-import { AuthContext } from '../../contexts/AuthContext';
+import { Carro } from "../../../models/Carro";
+import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
-import { buscar } from "../../service/Service";
+import { buscar } from "../../../service/Service";
 import './listaCarros.css'; 
+import CardCarro from "../cardCarro/CardCarro";
 
 export function ListaCarros() {
     const [carros, setCarros] = useState<Carro[]>([]);
@@ -24,7 +25,7 @@ export function ListaCarros() {
                 headers: { Authorization: token },
             });
 
-            console.log('Resposta da API:', resposta);
+            console.log(resposta);
         } catch (error) {
             alert('Não foi possível buscar os carros');
             console.error(error);
@@ -45,14 +46,7 @@ export function ListaCarros() {
             ) : (
                 <section className="carros-list">
                     {carros.map(carro => (
-                        <article key={carro.idCarro} className="carro-item">
-                            <h2>{carro.marca} {carro.modelo}</h2>
-                            <p><strong>Ano:</strong> {carro.ano}</p>
-                            <p><strong>Placa:</strong> {carro.placa}</p>
-                            <p><strong>Valor:</strong> R${carro.valor.toFixed(2)}</p>
-                            <p><strong>Manutenção em Dia:</strong> {carro.manutencaoEmDia ? 'Sim' : 'Não'}</p>
-                            <p><strong>Ativo:</strong> {carro.ativo ? 'Sim' : 'Não'}</p>
-                        </article>
+                        <CardCarro carro={carro}/>
                     ))}
                 </section>
             )}

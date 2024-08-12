@@ -60,7 +60,7 @@
 }
 
 .submit-button:disabled {
-    background-color: var(--ghostwhite);
+    background-color: var(--black);
     cursor: not-allowed;
 }
 

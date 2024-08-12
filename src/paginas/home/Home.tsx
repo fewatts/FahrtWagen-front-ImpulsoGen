@@ -1,5 +1,5 @@
 import home from './../../assets/home.svg';
-import { ListaCarros } from '../../componentes/carros/listaCarros';
+import { ListaCarros } from '../../componentes/carros/listarCarros/listaCarros';
 import './Home.css';
 
 function Home() {

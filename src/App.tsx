@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Footer } from "./componentes/footer/Footer";
 import { Auth } from "./paginas/auth/Auth";
 import { AuthProvider } from './contexts/AuthContext';
+import { ListaCarros } from "./componentes/carros/listarCarros/listaCarros";
+import FormularioCarro from "./componentes/carros/formCarro/FormCarro";
 
 function App() {
   return (
@@ -15,6 +17,9 @@ function App() {
             <Route path="/" element={<Auth />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/carros" element={<ListaCarros />} />
+            <Route path="/editarCarro/:id" element={<FormularioCarro />} />
+            <Route path="/cadastrarCarro" element={<FormularioCarro />} />
           </Routes>
           <Footer />
         </BrowserRouter>
