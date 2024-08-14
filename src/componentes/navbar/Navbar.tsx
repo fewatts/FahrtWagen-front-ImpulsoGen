@@ -3,6 +3,7 @@ import logo from './../../assets/favicon.png';
 import './Navbar.css';
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toastAlerta } from "../../utils/ToastAlert";
 
 function Navbar() {
 
@@ -12,7 +13,7 @@ function Navbar() {
 
     function logout() {
         handleLogout();
-        alert('Usuário deslogado com sucesso');
+        toastAlerta('Usuário deslogado com sucesso', 'info');
         navigate('/auth');
     }
 

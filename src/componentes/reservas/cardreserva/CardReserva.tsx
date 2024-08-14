@@ -6,6 +6,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { Cliente } from "../../../models/Cliente";
 import { Carro } from "../../../models/Carro";
 import { Link } from "react-router-dom";
+import { toastAlerta } from "../../../utils/ToastAlert";
 
 interface CardReservaProps {
     reserva: Reserva;
@@ -28,9 +29,17 @@ function CardReserva({ reserva }: CardReservaProps) {
             await buscarPeloId(`/clientes/${reserva.cliente}`, setCliente, {
                 headers: { Authorization: token },
             });
-        } catch (error) {
-            alert('Não foi possível buscar o cliente');
-            console.error(error);
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Não foi possível buscar o cliente';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
         }
     }
 
@@ -39,9 +48,17 @@ function CardReserva({ reserva }: CardReservaProps) {
             await buscarPeloId(`/carros/${reserva.carro}`, setCarro, {
                 headers: { Authorization: token },
             });
-        } catch (error) {
-            alert('Não foi possível buscar o carro');
-            console.error(error);
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Não foi possível buscar o carro';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
         }
     }
 
@@ -73,7 +90,8 @@ function CardReserva({ reserva }: CardReservaProps) {
                     <dd>{ajustarData(reserva.dataFim).toLocaleDateString()}</dd>
 
                     <dt>Valor:</dt>
-                    <dd>R$ {reserva.valor.toFixed(2)}</dd>
+                    <dd>R$ {reserva.valor !== null && reserva.valor !== undefined ? reserva.valor.toFixed(2) : 'N/A'}</dd>
+
                 </dl>
             </section>
 

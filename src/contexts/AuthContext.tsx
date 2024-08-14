@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from "react"; // Importa funções e tipos necessários do React
 import { UsuarioLogin } from "../models/UsuarioLogin"; // Importa o modelo de dados do usuário
 import { login } from "../service/Service"; // Importa a função de login do serviço
+import { toastAlerta } from "../utils/ToastAlert";
 
 // Define a interface para as propriedades do contexto de autenticação
 interface AuthContextProps {
@@ -39,10 +40,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         try {
             await login(`/login`, userLogin, setUsuario); // Chama a função de login do serviço
-            alert("Usuário logado com sucesso"); // Exibe uma mensagem de sucesso
-        } catch (error) {
-            console.log(error); // Loga o erro no console para depuração
-            alert("Erro ao fazer login"); // Exibe uma mensagem de erro
+            toastAlerta('Usuário logado com sucesso', 'sucesso');
+        } catch (error: any) {
+            if (error.response) {
+                // O servidor respondeu com um status diferente de 2xx
+                const status = error.response.status;
+                const message = error.response.data  || 'Erro ao efetuar login';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                // A requisição foi feita, mas nenhuma resposta foi recebida
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                // Algo aconteceu ao configurar a requisição
+                toastAlerta(`Erro inesperado: ${error.message}`, 'erro');
+            }
         } finally {
             setIsLoading(false); // Define o estado de carregamento como falso
         }

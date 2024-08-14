@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
 import './Menu.css';
+import { toastAlerta } from "../../utils/ToastAlert";
 
 export function Menu() {
 
@@ -10,7 +11,7 @@ export function Menu() {
 
     function logout() {
         handleLogout();
-        alert('Usuário deslogado com sucesso');
+        toastAlerta('Usuário deslogado com sucesso', 'info');
         navigate('/auth');
     }
 

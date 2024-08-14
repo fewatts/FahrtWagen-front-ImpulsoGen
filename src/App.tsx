@@ -14,6 +14,8 @@ import { Menu } from "./componentes/menu/Menu"
 import { ListarReservas } from "./componentes/reservas/listarReservas/ListarReservas"
 import { FormReserva } from "./componentes/reservas/formReserva/FormReserva"
 import { DeletarReserva } from "./componentes/reservas/deletarReservas/DeletarReserva"
+import { ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -22,6 +24,7 @@ function App() {
     <>
       <AuthProvider>
         <BrowserRouter>
+          <ToastContainer />
           <Navbar />
           <Routes>
             <Route path="/" element={<Auth />} />

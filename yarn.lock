@@ -772,6 +772,11 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+clsx@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.1.tgz#eed397c9fd8bd882bfb18deab7102049a2f32999"
+  integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.npmjs.org/color-convert/-/color-convert-1.9.3.tgz"
@@ -1011,7 +1016,7 @@ esutils@^2.0.2:
   version "0.0.0"
   dependencies:
     axios "^1.7.3"
-    fahrtwagen "file:../../../../AppData/Local/Yarn/Cache/v6/npm-fahrtwagen-0.0.0-b8c516e1-78cc-4f1f-9ab0-95aacb0855cb-1723125044054/node_modules/fahrtwagen"
+    fahrtwagen "file:../../../../AppData/Local/Yarn/Cache/v6/npm-fahrtwagen-0.0.0-289d7b3f-7f15-4db5-b6d9-f59e9679608e-1723656794565/node_modules/fahrtwagen"
     react "^18.3.1"
     react-dom "^18.3.1"
     react-redux "^9.1.2"
@@ -1510,6 +1515,13 @@ react-router@6.26.0:
   integrity sha512-wVQq0/iFYd3iZ9H2l3N3k4PL8EEHcb0XlU2Na8nEwmiXgIUElEH6gaJDtUQxJ+JFzmIXaQjfdpcGWaM6IoQGxg==
   dependencies:
     "@remix-run/router" "1.19.0"
+
+react-toastify@^10.0.5:
+  version "10.0.5"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-10.0.5.tgz#6b8f8386060c5c856239f3036d1e76874ce3bd1e"
+  integrity sha512-mNKt2jBXJg4O7pSdbNUfDdTsK9FIdikfsIE/yUCxbAEXl4HMyJaivrVFcn3Elvt5xvCQYhUZm+hqTIu1UXM3Pw==
+  dependencies:
+    clsx "^2.1.0"
 
 react-use-localstorage@^3.5.3:
   version "3.5.3"

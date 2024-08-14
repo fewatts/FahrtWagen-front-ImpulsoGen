@@ -6,6 +6,7 @@ import { Cliente } from "../../../models/Cliente";
 import './FormReserva.css';
 import { useState, useContext, useEffect, ChangeEvent } from "react";
 import { atualizar, buscarPeloId, cadastrar } from "../../../service/Service";
+import { toastAlerta } from "../../../utils/ToastAlert";
 
 export function FormReserva() {
     const [reserva, setReserva] = useState<Reserva>({
@@ -26,11 +27,11 @@ export function FormReserva() {
     const token = usuario.token;
 
     useEffect(() => {
-        if (token === '') {
-            alert('Você precisa estar autenticado para isso');
+        if (!token) {
+            toastAlerta('Você precisa estar autenticado para isso', 'info');
             navigate('/auth');
         }
-    }, [token]);
+    }, [token, navigate]);
 
     const { id } = useParams<{ id: string }>();
 
@@ -40,6 +41,7 @@ export function FormReserva() {
                 headers: { Authorization: token }
             });
         } catch (error) {
+            toastAlerta('Erro ao buscar reserva', 'erro');
             console.error('Erro ao buscar reserva:', error);
         }
     }
@@ -50,6 +52,7 @@ export function FormReserva() {
                 headers: { Authorization: token }
             });
         } catch (error) {
+            toastAlerta('Erro ao buscar carro', 'erro');
             console.error('Erro ao buscar carro:', error);
             setCarro(null);
         }
@@ -61,25 +64,26 @@ export function FormReserva() {
                 headers: { Authorization: token }
             });
         } catch (error) {
+            toastAlerta('Erro ao buscar cliente', 'erro');
             console.error('Erro ao buscar cliente:', error);
             setCliente(null);
         }
     }
 
     useEffect(() => {
-        if (id !== undefined) {
+        if (id) {
             buscarReservaPorId(id);
         }
     }, [id]);
 
     useEffect(() => {
-        if (reserva.carro > 0) {
+        if (reserva.carro) {
             buscarCarroPorId(reserva.carro);
         }
     }, [reserva.carro]);
 
     useEffect(() => {
-        if (reserva.cliente > 0) {
+        if (reserva.cliente) {
             buscarClientePorId(reserva.cliente);
         }
     }, [reserva.cliente]);
@@ -99,32 +103,48 @@ export function FormReserva() {
         e.preventDefault();
 
         try {
-            if (id !== undefined) {
-                console.log("Atualizando reserva:", reserva);
-                const response = await atualizar(`/reservas/${id}`, reserva, setReserva, {
+            if (id) {
+                await atualizar(`/reservas/${id}`, reserva, setReserva, {
                     headers: { Authorization: token }
                 });
-                console.log("Resposta da atualização:", response);
-                alert('Reserva atualizada com sucesso');
+                toastAlerta('Reserva atualizada com sucesso', 'sucesso');
             } else {
-                console.log("Cadastrando nova reserva:", reserva);
-                const response = await cadastrar(`/reservas`, reserva, setReserva, {
+                await cadastrar(`/reservas`, reserva, setReserva, {
                     headers: { Authorization: token }
                 });
-                console.log("Resposta do cadastro:", response);
-                alert('Reserva cadastrada com sucesso');
+                toastAlerta('Reserva cadastrada com sucesso', 'sucesso');
             }
             retornar();
         } catch (error: any) {
             console.error("Erro ao processar a solicitação:", error);
+
             if (error.toString().includes('403')) {
-                alert('O token expirou, favor logar novamente');
+                toastAlerta('O token expirou, favor logar novamente', 'info');
                 handleLogout();
+            } else if (error.response) {
+                const status = error.response.status;
+                let message = '';
+
+                if (Array.isArray(error.response.data) && error.response.data[0]?.mensagem) {
+                    message = error.response.data.map((err: any) => err.mensagem).join('; ');
+                } else if (typeof error.response.data === 'string') {
+                    message = error.response.data;
+                } else if (error.response.responseText) {
+                    message = error.response.responseText;
+                } else {
+                    message = 'Erro desconhecido';
+                }
+                toastAlerta(`${status}: ${message}`, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
             } else {
-                alert('Erro ao processar a solicitação');
+                toastAlerta(`Erro: ${error.message}`, 'erro');
             }
         }
     }
+
+
+
 
     return (
         <div className="form-container">

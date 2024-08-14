@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { buscar } from "../../../service/Service";
 import './ListarReservas.css';
 import CardReserva from "../cardreserva/CardReserva";
+import { toastAlerta } from "../../../utils/ToastAlert";
 
 export function ListarReservas() {
     const [reservas, setReservas] = useState<Reserva[]>([]);
@@ -14,20 +15,18 @@ export function ListarReservas() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Sem token, redirecionando para login...');
+            toastAlerta('Sem token, redirecionando para login...', 'info');
             navigate('/auth');
         }
     }, [token, navigate]);
 
     async function getReservas() {
         try {
-            const resposta = await buscar('/reservas', setReservas, {
+            await buscar('/reservas', setReservas, {
                 headers: { Authorization: token },
             });
-
-            console.log(resposta);
         } catch (error) {
-            alert('Não foi possível buscar as reservas');
+            toastAlerta('Não foi possível buscar as reservas', 'erro');
             console.error(error);
         }
     }

@@ -4,6 +4,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { buscarPeloId, deletar } from '../../../service/Service';
 import './DeletarCarro.css'; // Importa o CSS específico
 import { Carro } from '../../../models/Carro';
+import { toastAlerta } from '../../../utils/ToastAlert';
 
 export function DeletarCarro() {
     const [carro, setCarro] = useState<Carro>();
@@ -19,8 +20,17 @@ export function DeletarCarro() {
                     Authorization: token
                 }
             });
-        } catch (error) {
-            alert('Erro ao buscar o carro');
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao buscar o carro';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
         }
     }
 
@@ -31,21 +41,28 @@ export function DeletarCarro() {
                     Authorization: token
                 }
             });
-            alert('Carro excluído com sucesso');
+            toastAlerta('Carro excluído com sucesso', 'sucesso');
             navigate('/carros');
         } catch (error: any) {
-            if (error.toString().includes('403')) {
-                alert('Token vencido, por favor faça login novamente');
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao excluir o carro';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else if (error.toString().includes('403')) {
+                toastAlerta('Token vencido, por favor faça login novamente', 'info');
                 handleLogout();
             } else {
-                alert('Erro ao excluir o carro');
+                toastAlerta(`Erro: ${error.message}`, 'erro');
             }
         }
     }
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado');
+            toastAlerta('Você precisa estar logado', 'info');
             navigate('/auth');
         }
     }, [token]);

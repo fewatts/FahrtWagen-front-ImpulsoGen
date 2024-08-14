@@ -4,6 +4,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { atualizar, buscarPeloId, cadastrar } from '../../../service/Service';
 import './FormCliente.css'
+import { toastAlerta } from '../../../utils/ToastAlert';
 
 function FormCliente() {
     const [cliente, setCliente] = useState<Cliente>({
@@ -19,14 +20,27 @@ function FormCliente() {
     const { usuario, handleLogout } = useContext(AuthContext);
     const { id } = useParams<{ id: string }>();
     const token = usuario.token;
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     async function buscarPorId(id: string) {
-        await buscarPeloId(`/clientes/${id}`, setCliente, {
-            headers: {
-                Authorization: token,
-            },
-        });
+        try {
+            await buscarPeloId(`/clientes/${id}`, setCliente, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao buscar o cliente';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
+        }
     }
 
     useEffect(() => {
@@ -37,10 +51,10 @@ function FormCliente() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Sem token, redirecionando para login...');
+            toastAlerta('Sem token, redirecionando para login...', 'info');
             navigate('/auth');
         }
-    }, [token]);
+    }, [token, navigate]);
 
     function validarCampos(): boolean {
         const newErrors: { [key: string]: string } = {};
@@ -83,15 +97,19 @@ function FormCliente() {
                             Authorization: token,
                         },
                     });
-                    alert('Cliente atualizado');
+                    toastAlerta('Cliente atualizado', 'sucesso');
                     retornar();
                 } catch (error: any) {
-                    if (error.toString().includes('403')) {
-                        alert('Token vencido, loga denovo');
+                    if (error.response) {
+                        const status = error.response.status;
+                        const message = error.response.data || 'Erro ao atualizar o cliente';
+                        const errorMessage = `${status}: ${message}`;
+                        toastAlerta(errorMessage, 'erro');
+                    } else if (error.toString().includes('403')) {
+                        toastAlerta('Token vencido, por favor faça login novamente', 'info');
                         handleLogout();
                     } else {
-                        alert('Erro ao atualizar o cliente');
-                        alert(error);
+                        toastAlerta(`Erro: ${error.message}`, 'erro');
                     }
                 }
             } else {
@@ -101,14 +119,19 @@ function FormCliente() {
                             Authorization: token,
                         },
                     });
-                    alert('Cliente cadastrado');
+                    toastAlerta('Cliente cadastrado', 'sucesso');
                     retornar();
                 } catch (error: any) {
-                    if (error.toString().includes('403')) {
-                        alert('Token vencido, loga denovo');
+                    if (error.response) {
+                        const status = error.response.status;
+                        const message = error.response.data || 'Erro ao cadastrar o cliente';
+                        const errorMessage = `${status}: ${message}`;
+                        toastAlerta(errorMessage, 'erro');
+                    } else if (error.toString().includes('403')) {
+                        toastAlerta('Token vencido, por favor faça login novamente', 'info');
                         handleLogout();
                     } else {
-                        alert('Erro ao cadastrar o cliente');
+                        toastAlerta(`Erro: ${error.message}`, 'erro');
                     }
                 }
             }

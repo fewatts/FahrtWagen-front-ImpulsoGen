@@ -4,6 +4,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { buscarPeloId, deletar } from '../../../service/Service';
 import './DeletarCliente.css';
 import { Cliente } from '../../../models/Cliente';
+import { toastAlerta } from '../../../utils/ToastAlert';
 
 export function DeletarCliente() {
     const [cliente, setCliente] = useState<Cliente>();
@@ -19,8 +20,17 @@ export function DeletarCliente() {
                     Authorization: token
                 }
             });
-        } catch (error) {
-            alert('Erro ao buscar o cliente');
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao buscar o cliente';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
         }
     }
 
@@ -31,30 +41,37 @@ export function DeletarCliente() {
                     Authorization: token
                 }
             });
-            alert('Cliente excluído com sucesso');
+            toastAlerta('Cliente excluído com sucesso', 'sucesso');
             navigate('/clientes');
         } catch (error: any) {
-            if (error.toString().includes('403')) {
-                alert('Token vencido, por favor faça login novamente');
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao excluir o cliente';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else if (error.toString().includes('403')) {
+                toastAlerta('Token vencido, por favor faça login novamente', 'info');
                 handleLogout();
             } else {
-                alert('Erro ao excluir o cliente');
+                toastAlerta(`Erro: ${error.message}`, 'erro');
             }
         }
     }
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado');
+            toastAlerta('Você precisa estar logado', 'info');
             navigate('/auth');
         }
-    }, [token]);
+    }, [token, navigate]);
 
     useEffect(() => {
         if (id !== undefined) {
             buscarPorId(id);
         }
-    }, [id]);
+    }, [id, token]);
 
     return (
         <main className="form-container">

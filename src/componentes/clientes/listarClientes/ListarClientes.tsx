@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { buscar } from "../../../service/Service";
 import './ListarClientes.css';
 import CardCliente from "../cardCliente/CardCliente";
+import { toastAlerta } from "../../../utils/ToastAlert";
 
 export function ListarClientes() {
     const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -14,21 +15,27 @@ export function ListarClientes() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Sem token, redirecionando para login...');
+            toastAlerta('Sem token, redirecionando para login...', 'info');
             navigate('/auth');
         }
     }, [token, navigate]);
 
     async function getClientes() {
         try {
-            const resposta = await buscar('/clientes', setClientes, {
+            await buscar('/clientes', setClientes, {
                 headers: { Authorization: token },
             });
-
-            console.log(resposta);
-        } catch (error) {
-            alert('Não foi possível buscar os clientes');
-            console.error(error);
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Não foi possível buscar os clientes';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
         }
     }
 

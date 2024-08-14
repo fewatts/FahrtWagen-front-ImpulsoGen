@@ -3,8 +3,9 @@ import { Carro } from "../../../models/Carro";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
 import { buscar } from "../../../service/Service";
-import './ListarCarros.css'; 
+import './ListarCarros.css';
 import CardCarro from "../cardCarro/CardCarro";
+import { toastAlerta } from "../../../utils/ToastAlert";
 
 export function ListarCarros() {
     const [carros, setCarros] = useState<Carro[]>([]);
@@ -14,7 +15,7 @@ export function ListarCarros() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Sem token, redirecionando para login...');
+            toastAlerta('Sem token, redirecionando para login...', 'info');
             navigate('/auth');
         }
     }, [token, navigate]);
@@ -24,9 +25,17 @@ export function ListarCarros() {
             await buscar('/carros', setCarros, {
                 headers: { Authorization: token },
             });
-        } catch (error) {
-            alert('Não foi possível buscar os carros');
-            console.error(error);
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Não foi possível buscar os carros';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
         }
     }
 
@@ -44,7 +53,7 @@ export function ListarCarros() {
             ) : (
                 <section className="carros-list">
                     {carros.map(carro => (
-                        <CardCarro carro={carro}/>
+                        <CardCarro carro={carro} />
                     ))}
                 </section>
             )}

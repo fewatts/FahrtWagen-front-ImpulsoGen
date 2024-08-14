@@ -4,9 +4,10 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { buscarPeloId, deletar } from '../../../service/Service';
 import './DeletarReserva.css'; // Atualize o nome do CSS se necessário
 import { Reserva } from '../../../models/Reserva'; // Atualize o caminho do modelo
+import { toastAlerta } from '../../../utils/ToastAlert';
 
 export function DeletarReserva() {
-    const [reserva, setReserva] = useState<Reserva>();
+    const [reserva, setReserva] = useState<Reserva | null>(null);
     const navigate = useNavigate();
     const { usuario, handleLogout } = useContext(AuthContext);
     const token = usuario.token;
@@ -16,11 +17,20 @@ export function DeletarReserva() {
         try {
             await buscarPeloId(`/reservas/${id}`, setReserva, {
                 headers: {
-                    Authorization: token
-                }
+                    Authorization: token,
+                },
             });
-        } catch (error) {
-            alert('Erro ao buscar a reserva');
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao buscar a reserva';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro inesperado: ${error.message}`, 'erro');
+            }
         }
     }
 
@@ -28,33 +38,41 @@ export function DeletarReserva() {
         try {
             await deletar(`/reservas/${id}`, {
                 headers: {
-                    Authorization: token
-                }
+                    Authorization: token,
+                },
             });
-            alert('Reserva excluída com sucesso');
+            toastAlerta('Reserva excluída com sucesso', 'sucesso');
             navigate('/reservas');
         } catch (error: any) {
-            if (error.toString().includes('403')) {
-                alert('Token vencido, por favor faça login novamente');
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao excluir a reserva';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else if (error.toString().includes('403')) {
+                toastAlerta('Token vencido, por favor faça login novamente', 'info');
                 handleLogout();
             } else {
-                alert('Erro ao excluir a reserva');
+                toastAlerta(`Erro inesperado: ${error.message}`, 'erro');
             }
         }
     }
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado');
+            toastAlerta('Você precisa estar logado', 'info');
             navigate('/auth');
         }
-    }, [token]);
+    }, [token, navigate]);
 
     useEffect(() => {
         if (id !== undefined) {
             buscarPorId(id);
         }
     }, [id]);
+
 
     return (
         <main className="form-container">

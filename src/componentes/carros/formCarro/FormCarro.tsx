@@ -4,6 +4,7 @@ import './FormCarro.css';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { atualizar, buscarPeloId, cadastrar } from '../../../service/Service';
+import { toastAlerta } from '../../../utils/ToastAlert';
 
 
 function FormularioCarro() {
@@ -19,23 +20,31 @@ function FormularioCarro() {
         ativo: false,
     });
 
-
     const { usuario, handleLogout } = useContext(AuthContext);
-
     const { id } = useParams<{ id: string }>();
-
     const token = usuario.token;
-
     let navigate = useNavigate();
 
     async function buscarPorId(id: string) {
-        await buscarPeloId(`/carros/${id}`, setCarro, {
-            headers: {
-                Authorization: token,
-            },
-        });
+        try {
+            await buscarPeloId(`/carros/${id}`, setCarro, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+        } catch (error: any) {
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data || 'Erro ao buscar o carro';
+                const errorMessage = `${status}: ${message}`;
+                toastAlerta(errorMessage, 'erro');
+            } else if (error.request) {
+                toastAlerta('Erro na conexão com o servidor', 'erro');
+            } else {
+                toastAlerta(`Erro: ${error.message}`, 'erro');
+            }
+        }
     }
-
 
     useEffect(() => {
         if (id !== undefined) {
@@ -45,7 +54,7 @@ function FormularioCarro() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Pega teu token lá');
+            toastAlerta('Você precisa estar logado', 'info');
             navigate('/auth');
         }
     }, [token]);
@@ -58,7 +67,6 @@ function FormularioCarro() {
         });
     }
 
-
     async function gerarNovoCarro(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
 
@@ -69,14 +77,21 @@ function FormularioCarro() {
                         Authorization: token,
                     },
                 });
-                alert('Carro atualizado');
+                toastAlerta('Carro atualizado com sucesso', 'sucesso');
                 retornar();
             } catch (error: any) {
-                if (error.toString().includes('403')) {
-                    alert('Token vencido, loga denovo');
+                if (error.response) {
+                    const status = error.response.status;
+                    const message = error.response.data || 'Erro ao atualizar o carro';
+                    const errorMessage = `${status}: ${message}`;
+                    toastAlerta(errorMessage, 'erro');
+                } else if (error.request) {
+                    toastAlerta('Erro na conexão com o servidor', 'erro');
+                } else if (error.toString().includes('403')) {
+                    toastAlerta('Token vencido, por favor faça login novamente', 'info');
                     handleLogout();
                 } else {
-                    alert('Erro ao atualizar o carro');
+                    toastAlerta(`Erro: ${error.message}`, 'erro');
                 }
             }
         } else {
@@ -86,14 +101,21 @@ function FormularioCarro() {
                         Authorization: token,
                     },
                 });
-                alert('Carro cadastrado');
+                toastAlerta('Carro cadastrado com sucesso', 'sucesso');
                 retornar();
             } catch (error: any) {
-                if (error.toString().includes('403')) {
-                    alert('Token vencido, loga denovo');
+                if (error.response) {
+                    const status = error.response.status;
+                    const message = error.response.data || 'Erro ao cadastrar o carro';
+                    const errorMessage = `${status}: ${message}`;
+                    toastAlerta(errorMessage, 'erro');
+                } else if (error.request) {
+                    toastAlerta('Erro na conexão com o servidor', 'erro');
+                } else if (error.toString().includes('403')) {
+                    toastAlerta('Token vencido, por favor faça login novamente', 'info');
                     handleLogout();
                 } else {
-                    alert('Erro ao cadastrar o carro');
+                    toastAlerta(`Erro: ${error.message}`, 'erro');
                 }
             }
         }
