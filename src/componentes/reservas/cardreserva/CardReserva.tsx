@@ -11,6 +11,12 @@ interface CardReservaProps {
     reserva: Reserva;
 }
 
+function ajustarData(dataString: string) {
+    const data = new Date(dataString);
+    data.setDate(data.getDate() + 1); // Incrementa o dia
+    return data;
+}
+
 function CardReserva({ reserva }: CardReservaProps) {
     const [cliente, setCliente] = useState<Cliente | null>(null);
     const [carro, setCarro] = useState<Carro | null>(null);
@@ -61,10 +67,13 @@ function CardReserva({ reserva }: CardReservaProps) {
                     <dd>{cliente ? cliente.nome : 'Cliente não encontrado'}</dd>
 
                     <dt>Data de Início:</dt>
-                    <dd>{new Date(reserva.dataInicio).toLocaleDateString()}</dd>
+                    <dd>{ajustarData(reserva.dataInicio).toLocaleDateString()}</dd>
 
                     <dt>Data de Fim:</dt>
-                    <dd>{new Date(reserva.dataFim).toLocaleDateString()}</dd>
+                    <dd>{ajustarData(reserva.dataFim).toLocaleDateString()}</dd>
+
+                    <dt>Valor:</dt>
+                    <dd>R$ {reserva.valor.toFixed(2)}</dd>
                 </dl>
             </section>
 

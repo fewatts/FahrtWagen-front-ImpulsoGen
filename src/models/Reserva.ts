@@ -4,6 +4,6 @@ export interface Reserva {
     cliente: number;
     dataInicio: string;
     dataFim: string;
-    valor: number;
-    confirmada: boolean;
+    valor: number | null;
+    confirmada: boolean | null;
 }

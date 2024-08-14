@@ -14,8 +14,8 @@ export function FormReserva() {
         cliente: 0,
         dataInicio: '',
         dataFim: '',
-        valor: 0,
-        confirmada: false
+        valor: null,
+        confirmada: null
     });
 
     const [carro, setCarro] = useState<Carro | null>(null);
@@ -100,18 +100,23 @@ export function FormReserva() {
 
         try {
             if (id !== undefined) {
-                await atualizar(`/reservas`, reserva, setReserva, {
+                console.log("Atualizando reserva:", reserva);
+                const response = await atualizar(`/reservas/${id}`, reserva, setReserva, {
                     headers: { Authorization: token }
                 });
+                console.log("Resposta da atualização:", response);
                 alert('Reserva atualizada com sucesso');
             } else {
-                await cadastrar(`/reservas`, reserva, setReserva, {
+                console.log("Cadastrando nova reserva:", reserva);
+                const response = await cadastrar(`/reservas`, reserva, setReserva, {
                     headers: { Authorization: token }
                 });
+                console.log("Resposta do cadastro:", response);
                 alert('Reserva cadastrada com sucesso');
             }
             retornar();
         } catch (error: any) {
+            console.error("Erro ao processar a solicitação:", error);
             if (error.toString().includes('403')) {
                 alert('O token expirou, favor logar novamente');
                 handleLogout();
@@ -198,18 +203,6 @@ export function FormReserva() {
                             name="dataFim"
                             className="form-input"
                             value={reserva.dataFim}
-                            onChange={atualizarEstado}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="valor" className="form-label">Valor</label>
-                        <input
-                            type="number"
-                            id="valor"
-                            name="valor"
-                            className="form-input"
-                            value={reserva.valor}
                             onChange={atualizarEstado}
                             required
                         />
