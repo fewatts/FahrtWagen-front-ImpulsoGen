@@ -14,8 +14,12 @@ interface CardReservaProps {
 
 function ajustarData(dataString: string) {
     const data = new Date(dataString);
-    data.setDate(data.getDate() + 1); // Incrementa o dia
+    data.setDate(data.getDate() + 1);
     return data;
+}
+
+function formatarValor(valor: number) {
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 function CardReserva({ reserva }: CardReservaProps) {
@@ -77,8 +81,8 @@ function CardReserva({ reserva }: CardReservaProps) {
 
             <section className="card-content">
                 <dl>
-                    <dt>Placa do Carro:</dt>
-                    <dd>{carro ? carro.placa : 'Carro não encontrado'}</dd>
+                    <dt>Carro:</dt>
+                    <dd>{carro ? carro.marca + ' ' + carro.modelo : 'Carro não encontrado'}</dd>
 
                     <dt>Nome do Cliente:</dt>
                     <dd>{cliente ? cliente.nome : 'Cliente não encontrado'}</dd>
@@ -90,8 +94,7 @@ function CardReserva({ reserva }: CardReservaProps) {
                     <dd>{ajustarData(reserva.dataFim).toLocaleDateString()}</dd>
 
                     <dt>Valor:</dt>
-                    <dd>R$ {reserva.valor !== null && reserva.valor !== undefined ? reserva.valor.toFixed(2) : 'N/A'}</dd>
-
+                    <dd>{reserva.valor !== null && reserva.valor !== undefined ? formatarValor(reserva.valor) : 'N/A'}</dd>
                 </dl>
             </section>
 

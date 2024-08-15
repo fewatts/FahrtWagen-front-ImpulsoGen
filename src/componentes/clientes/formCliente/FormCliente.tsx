@@ -8,7 +8,7 @@ import { toastAlerta } from '../../../utils/ToastAlert';
 
 function FormCliente() {
     const [cliente, setCliente] = useState<Cliente>({
-        idCliente: null,
+        idCliente: 0,
         nome: '',
         cpf: '',
         email: '',

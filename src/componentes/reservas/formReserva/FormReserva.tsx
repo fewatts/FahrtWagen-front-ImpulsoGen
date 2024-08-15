@@ -5,7 +5,7 @@ import { Carro } from "../../../models/Carro";
 import { Cliente } from "../../../models/Cliente";
 import './FormReserva.css';
 import { useState, useContext, useEffect, ChangeEvent } from "react";
-import { atualizar, buscarPeloId, cadastrar } from "../../../service/Service";
+import { atualizar, buscar, buscarPeloId, cadastrar } from "../../../service/Service";
 import { toastAlerta } from "../../../utils/ToastAlert";
 
 export function FormReserva() {
@@ -19,8 +19,8 @@ export function FormReserva() {
         confirmada: null
     });
 
-    const [carro, setCarro] = useState<Carro | null>(null);
-    const [cliente, setCliente] = useState<Cliente | null>(null);
+    const [carros, setCarros] = useState<Carro[]>([]);
+    const [clientes, setClientes] = useState<Cliente[]>([]);
 
     const navigate = useNavigate();
     const { usuario, handleLogout } = useContext(AuthContext);
@@ -46,27 +46,23 @@ export function FormReserva() {
         }
     }
 
-    async function buscarCarroPorId(carroId: number) {
+    async function buscarCarros() {
         try {
-            await buscarPeloId(`/carros/${carroId}`, setCarro, {
+            await buscar(`/carros`, setCarros, {
                 headers: { Authorization: token }
             });
         } catch (error) {
-            toastAlerta('Erro ao buscar carro', 'erro');
-            console.error('Erro ao buscar carro:', error);
-            setCarro(null);
+            setCarros([]);
         }
     }
 
-    async function buscarClientePorId(clienteId: number) {
+    async function buscarClientes() {
         try {
-            await buscarPeloId(`/clientes/${clienteId}`, setCliente, {
+            await buscar(`/clientes`, setClientes, {
                 headers: { Authorization: token }
             });
         } catch (error) {
-            toastAlerta('Erro ao buscar cliente', 'erro');
-            console.error('Erro ao buscar cliente:', error);
-            setCliente(null);
+            setClientes([]);
         }
     }
 
@@ -74,24 +70,14 @@ export function FormReserva() {
         if (id) {
             buscarReservaPorId(id);
         }
+        buscarCarros();
+        buscarClientes();
     }, [id]);
 
-    useEffect(() => {
-        if (reserva.carro) {
-            buscarCarroPorId(reserva.carro);
-        }
-    }, [reserva.carro]);
-
-    useEffect(() => {
-        if (reserva.cliente) {
-            buscarClientePorId(reserva.cliente);
-        }
-    }, [reserva.cliente]);
-
-    function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+    function atualizarEstado(e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) {
         setReserva({
             ...reserva,
-            [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
+            [e.target.name]: e.target.value
         });
     }
 
@@ -143,9 +129,6 @@ export function FormReserva() {
         }
     }
 
-
-
-
     return (
         <div className="form-container">
             <div className="client-form">
@@ -153,55 +136,39 @@ export function FormReserva() {
                 <form className="reserva-form" onSubmit={gerarNovaReserva}>
                     <div className="form-group">
                         <label htmlFor="carro" className="form-label">Carro</label>
-                        <input
-                            type="number"
+                        <select
                             id="carro"
                             name="carro"
                             className="form-input"
-                            value={reserva.carro}
+                            value={reserva.carro || ""}
                             onChange={atualizarEstado}
                             required
-                        />
-                        {carro === null ? (
-                            <div className="info">
-                                <p>Carro não encontrado</p>
-                            </div>
-                        ) : (
-                            carro && (
-                                <div className="info">
-                                    <p>Marca: {carro.marca}</p>
-                                    <p>Modelo: {carro.modelo}</p>
-                                    <p>Ano: {carro.ano}</p>
-                                    <p>Placa: {carro.placa}</p>
-                                    <p>Valor: {carro.valor}</p>
-                                </div>
-                            )
-                        )}
+                        >
+                            <option value="" disabled>Selecione um carro</option>
+                            {carros.map((carro) => (
+                                <option key={carro.idCarro} value={carro.idCarro}>
+                                    {carro.marca} - {carro.modelo} ({carro.placa})
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="cliente" className="form-label">Cliente</label>
-                        <input
-                            type="number"
+                        <select
                             id="cliente"
                             name="cliente"
                             className="form-input"
-                            value={reserva.cliente}
+                            value={reserva.cliente || ""}
                             onChange={atualizarEstado}
                             required
-                        />
-                        {cliente === null ? (
-                            <div className="info">
-                                <p>Cliente não encontrado</p>
-                            </div>
-                        ) : (
-                            cliente && (
-                                <div className="info">
-                                    <p>Nome: {cliente.nome}</p>
-                                    <p>Email: {cliente.email}</p>
-                                    <p>Telefone: {cliente.telefone}</p>
-                                </div>
-                            )
-                        )}
+                        >
+                            <option value="" disabled>Selecione um cliente</option>
+                            {clientes.map((cliente) => (
+                                <option key={cliente.idCliente} value={cliente.idCliente}>
+                                    {cliente.nome} ({cliente.email})
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="dataInicio" className="form-label">Data Início</label>

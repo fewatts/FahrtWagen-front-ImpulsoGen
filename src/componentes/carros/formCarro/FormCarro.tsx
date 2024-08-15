@@ -10,7 +10,7 @@ import { toastAlerta } from '../../../utils/ToastAlert';
 function FormularioCarro() {
 
     const [carro, setCarro] = useState<Carro>({
-        idCarro: null,
+        idCarro: 0,
         marca: '',
         modelo: '',
         ano: 0,
@@ -122,7 +122,7 @@ function FormularioCarro() {
     }
 
     function retornar() {
-        navigate('/carros');
+        navigate('/home');
     }
 
     return (
